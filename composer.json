@@ -1,0 +1,22 @@
+{
+    "name": "developernaren/mvc",
+    "description": "Custom MVC",
+    "type": "test",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Naren",
+            "email": "developer.naren@gmail.com"
+        }
+    ],
+    "autoload" : {
+      "psr-4" : {
+          "App\\" : "App/",
+          "Framework\\" : "Framework/"
+      }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "joshcam/mysqli-database-class": "dev-master"
+    }
+}
