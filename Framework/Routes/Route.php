@@ -35,9 +35,19 @@ class Route {
 
     function execute() {
 
-        list( $class, $method ) = $this->parseClassAndMethod();
+
+        $retArr = $this->parseClassAndMethod();
+
+        list( $class, $method ) = $retArr;
         $newClass =  new $class();
+
+        if ( !empty( $retArr[2] ) ) {
+            return $newClass->$method( $retArr[2] );
+        }
+
         return $newClass->$method();
+
+
 
     }
 
@@ -45,9 +55,36 @@ class Route {
     private function parseClassAndMethod() {
 
         $method = $_SERVER['REQUEST_METHOD'];
-        $uri = str_replace( '/', '', $_SERVER['PATH_INFO'] );
+        $uri = $_SERVER['QUERY_STRING'];
         $routesArr = self::$routes[ strtolower( $method )  ];
-        return explode('@', $routesArr[$uri] );
+        if ( !empty( $routesArr[$uri] )) {
+            return explode('@', $routesArr[$uri] );
+        }
+
+        $uriArr = explode('/', $uri );
+        $buildUriStr = '';
+        $param = '';
+
+        foreach( $uriArr as $u ) {
+
+            if ( !empty( $u ) ) {
+
+                if ( is_numeric( $u ) ) {
+                    $buildUriStr .= "/{num}";
+                    $param = $u;
+                } else {
+                    $buildUriStr .=  "/". $u;
+                }
+
+            }
+        }
+
+        $retArr = explode('@', $routesArr[$buildUriStr] );
+        $retArr[] = $param;
+        return $retArr;
+
+
+
 
     }
 

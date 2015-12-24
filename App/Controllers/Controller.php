@@ -15,4 +15,9 @@ class Controller{
         return View::render( 'contact/index.php', [ 'enquiries' => $enquiries  ]);
 
     }
+
+    function edit( $id ) {
+
+        echo $id;
+    }
 }
